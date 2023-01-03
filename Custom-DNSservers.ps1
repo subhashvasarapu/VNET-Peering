@@ -17,12 +17,3 @@ foreach ($row in $file)
    }
    Set-AzVirtualNetwork -VirtualNetwork $VNET
 }
-
-#Setting up Custom DNS servers for a VNET 
-Write-Host "Setting up Custom DNS servers for the VNET" -ForegroundColor Green
-$virtualNetwork1.DhcpOptions.DnsServers = $null
-foreach ($IP in $DNSIPs)
-{
-$vnet.DhcpOptions.DnsServers += $IP
-}
-Set-AzureRmVirtualNetwork -VirtualNetwork $VNET
