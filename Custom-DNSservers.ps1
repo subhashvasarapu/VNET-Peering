@@ -11,10 +11,9 @@ foreach ($row in $file)
 #Setting up Custom DNS servers for a VNET 
    Write-Host "Setting up Custom DNS servers for the VNET" -ForegroundColor Green
    $virtualNetwork1=Get-AzVirtualNetwork -Name $VNET -ResourceGroupName $RG1
-   $virtualNetwork1.DhcpOptions = $null
    foreach ($IP in $DNSIPs)
    {
-   $vnet.DhcpOptions += $IP
+   $virtualNetwork1.DhcpOptions = $IP
    }
    Set-AzVirtualNetwork -VirtualNetwork $VNET
 }
