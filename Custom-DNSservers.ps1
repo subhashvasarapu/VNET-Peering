@@ -15,5 +15,5 @@ foreach ($row in $file)
    {
    $virtualNetwork1.DhcpOptions = $IP
    }
-   Set-AzVirtualNetwork -VirtualNetwork $VNET
+   Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork1
 }
