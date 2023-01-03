@@ -13,7 +13,8 @@ foreach ($row in $file)
    $virtualNetwork1=Get-AzVirtualNetwork -Name $VNET -ResourceGroupName $RG1
    foreach ($IP in $DNSIPs)
    {
-   $virtualNetwork1.DhcpOptions = $IP
+   $newObject = New-Object -type PSObject -Property @{"DnsServers" = $DNSIPs}
+   $virtualNetwork1.DhcpOptions = $newObject
    }
    Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork1
 }
