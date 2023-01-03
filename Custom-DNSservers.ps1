@@ -7,14 +7,14 @@ foreach ($row in $file)
    $RemoteVnet = $row.RemoteVNETname
    $RG2 = $row.RG2
    $DNSIPs = $row.DNSservers
-   Write-Host $VNET,$RemoteVnet,$DNSIPs,$RG1,$RG2
+   Write-Host $VNET,$RemoteVnet,$DNSIPs,$RG1,$RG2,$dnsipsplit
 #Setting up Custom DNS servers for a VNET 
    Write-Host "Setting up Custom DNS servers for the VNET" -ForegroundColor Green
    $virtualNetwork1=Get-AzVirtualNetwork -Name $VNET -ResourceGroupName $RG1
-   foreach ($IP in $DNSIPs)
+   $dnsipsplit = $DNSIPs -split ","
+   foreach ($IP in $dnsipsplit)
    {
-   $newObject = New-Object -type PSObject -Property @{"DnsServers" = $DNSIPs}
-   $virtualNetwork1.DhcpOptions = $newObject
+   $virtualNetwork1.DhcpOptions.DnsServers += $IP
    }
    Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork1
 }
