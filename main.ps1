@@ -25,13 +25,21 @@ Get-AzVirtualNetworkPeering `
   -VirtualNetworkName $VNET `
   | Select PeeringState
 
-#Setting up Custom DNS servers for a VNET 
-  Write-Host "Stting up Custom DNS servers for the VNET" -ForegroundColor Green
-  $virtualNetwork1.DhcpOptions.DnsServers = $null
-  foreach ($IP in $DNSIPs)
-{
-$vnet.DhcpOptions.DnsServers += $IP
-}
-  Set-AzureRmVirtualNetwork -VirtualNetwork $vnet
+  #Deleting the existing DNS servers for a VNET 
+  Write-Host "Deleting the existing DNS servers for a VNET " -ForegroundColor Green
+  $virtualNetwork2=Get-AzVirtualNetwork -Name $RemoteVnet -ResourceGroupName $Rg2
+  #$dnsipsplit = $DNSIPs -split ","
+  $virtualNetwork1.DhcpOptions.DnsServers = null
+  Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork1
+
+  #Setting up Custom DNS servers for a VNET 
+  Write-Host "Setting up Custom DNS servers for the VNET" -ForegroundColor Green
+  $virtualNetwork2=Get-AzVirtualNetwork -Name $RemoteVnet -ResourceGroupName $Rg2
+  $dnsipsplit = $DNSIPs -split ","
+  foreach ($IP in $dnsipsplit)
+  {
+  $virtualNetwork1.DhcpOptions.DnsServers += $IP
+  }
+  Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork1
 
 }
